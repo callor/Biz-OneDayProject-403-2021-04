@@ -2,13 +2,56 @@ package com.callor.score.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class ScoreServiceV1 {
 	
 	List<ScoreVO> scoreList;
+	Scanner scan;
 	public ScoreServiceV1() {
 		scoreList = new ArrayList<ScoreVO>();
+		scan = new Scanner(System.in);
 	}
+	
+	public void inputScore() {
+		System.out.println("과목별 성적 입력하세요");
+		Integer kor = this.inputScore("국어");
+		if(kor == null) {
+			return;
+		}
+		Integer eng = this.inputScore("영어");
+		if(eng == null) {
+			return;
+		}
+		
+		ScoreVO scoreVO = new ScoreVO();
+		scoreVO.setKor(kor);
+		scoreVO.setEng(eng);
+		scoreList.add(scoreVO);
+	}
+	
+	public Integer inputScore(String subject) {
+		while(true) {
+			System.out.print(subject + ">> ");
+			String strScore = scan.nextLine();
+			if(strScore.equals("QUIT")) {
+				return null;
+			}
+			Integer intScore = 0;
+			try {
+				intScore = Integer.valueOf(strScore);
+			} catch (Exception e) {
+				System.out.println("성적은 숫자로만 입력");
+				continue;
+			}
+			if(intScore < 0 || intScore > 100) {
+				System.out.println("0 ~ 100까지");
+				continue;
+			}
+			return intScore;
+		}
+	}
+	
 	
 	public void printList() {
 		
